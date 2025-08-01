@@ -25,8 +25,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-	// gRPC
-	implementation("net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE")
 	implementation ("javax.annotation:javax.annotation-api:1.3.2")
 	implementation ("org.flywaydb:flyway-mysql")
 	implementation("com.google.zxing:core:3.5.3")
