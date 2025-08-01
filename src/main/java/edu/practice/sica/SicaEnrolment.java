@@ -1,6 +1,8 @@
 package edu.practice.sica;
 
 import com.zkteco.biometric.SicaEnrollmentTool;
+import edu.practice.sica.entity.AttendanceRecords;
+import edu.practice.sica.service.AttendanceRecordsService;
 import edu.practice.sica.service.FingerprintService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -16,9 +18,10 @@ public class SicaEnrolment {
                 .headless(false)
                 .run(args);
         FingerprintService fingerprintService = context.getBean(FingerprintService.class);
+        AttendanceRecordsService attendanceRecords = context.getBean(AttendanceRecordsService.class);
 
         SwingUtilities.invokeLater(() -> {
-            new SicaEnrollmentTool(fingerprintService);
+            new SicaEnrollmentTool(fingerprintService,attendanceRecords);
         });
     }
 }

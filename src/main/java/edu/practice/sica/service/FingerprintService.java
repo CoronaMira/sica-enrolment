@@ -1,7 +1,9 @@
 package edu.practice.sica.service;
 
+import com.zkteco.biometric.FingerprintSensorEx;
 import edu.practice.sica.entity.Fingerprint;
 import edu.practice.sica.repository.FingerprintRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class FingerprintService {
 
     private final FingerprintRepository fingerprintRepository;
@@ -45,5 +48,22 @@ public class FingerprintService {
             throw new IllegalStateException("Fingerprint with ID " + fingerprintId + " not found.");
         }
         fingerprintRepository.delete(fingerprintId);
+    }
+
+    public Optional<Fingerprint> identify(byte[] capturedTemplate, long mhDB) {
+
+        List<Fingerprint> allFingerprints = fingerprintRepository.findAll(); // Asumiendo que tienes un método así.
+
+        for (Fingerprint storedFingerprint : allFingerprints) {
+            byte[] storedTemplate = storedFingerprint.getFingerprintData();
+
+            int score = FingerprintSensorEx.DBMatch(mhDB, capturedTemplate, storedTemplate);
+
+            if (score > 55) {
+                log.info("¡Coincidencia encontrada! Devuelve el registro de la huella.");
+                return Optional.of(storedFingerprint);
+            }
+        }
+        return Optional.empty();
     }
 }
